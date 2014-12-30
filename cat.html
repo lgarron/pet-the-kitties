@@ -8,47 +8,99 @@
   <!-- <script src="fastclick.js"></script> -->
 </head>
 <body>
-<div id="cat-feed"></div>
+<!-- <div id="cat-feed"></div> -->
 <!-- <div id="cat-view"></div> -->
+<div id="cat-stream"></div>
+<div id="preload"></div>
 <script>
 
-var addImage = function(name) {
-  var catPanel = document.createElement("div");
-  var hiddenCatPanel = document.createElement("div");
-  catPanel.style.backgroundImage = "url(gif/" + name + ".jpg)";
-  // Preload GIF.
-  hiddenCatPanel.style.backgroundImage = "url(gif/" + name + ".gif)";
-  // img.src = "thumb/" + images[image];
-  // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
-  document.getElementById("cat-feed").appendChild(catPanel);
+/*
 
-  // TODO: pre-load GIF in background.
+TODO:
+- stream (single image at a time)
+- music/purring
+- pause GIF on current frame
+- vertical vs. horizontal
+*/
+
+
+var cats = [
+  "paw-licking",
+  "lion-cat",
+  "2wWwn",
+  "banana-cat",
+  "cat-hugs-his-teddy-bear",
+  "vV4mtFs"
+];
+
+
+var loadCatStream = function() {
+  console.log("Creating cat stream.");
+  var catStream = document.getElementById("cat-stream");
+
+  var randomCat = function() {
+    return cats[Math.floor(Math.random() * cats.length)];
+  }
+
+  var currentCat = randomCat();
+
+  var preload = document.getElementById("preload");
+  function setCatBackground() {
+    console.log("Setting cat: " + currentCat);
+    catStream.style.backgroundImage = "url(gif/" + currentCat + ".jpg)";
+    preload.style.backgroundImage = "url(gif/" + currentCat + ".gif)";
+  }
+
+  setCatBackground();
+
+  var newCat = function() {
+    var prevCat = currentCat;
+    while (prevCat === currentCat) {
+      currentCat = randomCat();
+    }
+    setCatBackground();
+  }
+
+
   var animate = function(e) {
-    catPanel.style.backgroundImage = "url(gif/" + name + ".gif)";
+    catStream.style.backgroundImage = "url(gif/" + currentCat + ".gif)";
   }
 
   var halt = function(e) {
-    catPanel.style.backgroundImage = "url(gif/" + name + ".jpg)";
+    catStream.style.backgroundImage = "url(gif/" + currentCat + ".jpg)";
   }
 
   var preventDefault = function(e) {
     e.preventDefault();
   }
 
-  var lastMotionTime;
+  var lastAnimationTime;
   var animationTimeoutMs = 100;
+  var lastNewCatTime;
+  var newCatTimeoutMs = 1000;
 
   var animationTimeout = function() {
     var currentTime = new Date().getTime();
-    if (lastMotionTime + animationTimeoutMs/2 < currentTime) {
+    if (lastAnimationTime + animationTimeoutMs*0.99 < currentTime) {
+      lastAnimationTime = currentTime;
       halt();
+    }
+  }
+
+  var newCatTimeout = function() {
+    var currentTime = new Date().getTime();
+    if (lastNewCatTime + newCatTimeoutMs*0.99 < currentTime) {
+      lastNewCatTime = currentTime;
+      newCat();
     }
   }
 
   var touchmove = function(e) {
     animate();
-    lastMotionTime = new Date().getTime();
+    lastAnimationTime = new Date().getTime();
+    lastNewCatTime = new Date().getTime();
     setTimeout(animationTimeout, animationTimeoutMs);
+    setTimeout(newCatTimeout, newCatTimeoutMs);
     e.preventDefault();
   }
 
@@ -57,10 +109,10 @@ var addImage = function(name) {
   // catPanel.addEventListener("mousedown", animate);
   // catPanel.addEventListener("mouseup", halt);
 
-  catPanel.addEventListener("touchmove", touchmove);
+  catStream.addEventListener("touchmove", touchmove);
   // catPanel.addEventListener("mousemove", mousemove);
 
-  console.log("Created " + name);
+  console.log("Created cat stream.");
 }
 
 var loadCatFeed = function() {
@@ -69,18 +121,14 @@ var loadCatFeed = function() {
   //, "IMG_4533.jpg", "IMG_4567.jpg", "IMG_4585.jpg", "IMG_4590.jpg", "IMG_4591.jpg", "IMG_4595.jpg", "IMG_5440.jpg", "IMG_5454.jpg", "IMG_5525.jpg", "IMG_5526.jpg", "IMG_5558.jpg", "IMG_5564.jpg", "IMG_5569.jpg", "IMG_5572.jpg", "IMG_5587.jpg", "IMG_7593.jpg", "IMG_7606.jpg", "IMG_7617.jpg", "IMG_7625.jpg", "IMG_7633.jpg"
   // ];
 
-  images = [
-    "paw-licking",
-    "lion-cat"
-  ];
 
-  for (image in images) {
+  // for (image in images) {
     // var img = document.createElement("img");
     // img.src = "thumb/" + images[image];
     // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
     // document.getElementById("cat-feed").appendChild(img);
-    addImage(images[image]);
-  }
+    // addImage(images[image]);
+  // }
 };
 
 var loadCatView = function(cat) {
@@ -111,7 +159,7 @@ var loadCatGif = function(cat) {
 // document.body.addEventListener("touchend", touchend);
 
 // document.body.onload = loadCatFeed;
-document.body.onload = loadCatFeed.bind(this, "paw-licking");
+document.body.onload = loadCatStream;
 </script>
 </body>
 </html>
