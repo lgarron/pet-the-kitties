@@ -1,0 +1,36 @@
+<html>
+<head>
+  <title>Pet the Kitties</title>
+  <meta name="viewport" content="minimal-ui" />
+  <link rel="stylesheet" href="files/cat.css">
+  <!-- <script src="fastclick.js"></script> -->
+</head>
+<body>
+<!-- <div id="cat-feed"></div> -->
+<!-- <div id="cat-view"></div> -->
+<script>
+var loadCatFeed = function() {
+  console.log("Loading.");
+  var images = ["DSC00801.jpg", "IMG_4474.jpg", "IMG_4481.jpg", "IMG_4488.jpg", "IMG_4499.jpg", "IMG_4509.jpg"
+  //, "IMG_4533.jpg", "IMG_4567.jpg", "IMG_4585.jpg", "IMG_4590.jpg", "IMG_4591.jpg", "IMG_4595.jpg", "IMG_5440.jpg", "IMG_5454.jpg", "IMG_5525.jpg", "IMG_5526.jpg", "IMG_5558.jpg", "IMG_5564.jpg", "IMG_5569.jpg", "IMG_5572.jpg", "IMG_5587.jpg", "IMG_7593.jpg", "IMG_7606.jpg", "IMG_7617.jpg", "IMG_7625.jpg", "IMG_7633.jpg"
+  ];
+  for (image in images) {
+    var img = document.createElement("img");
+    img.src = "thumb/" + images[image];
+    img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
+    document.getElementById("cat-feed").appendChild(img);
+  }
+};
+
+var loadCatView = function(cat) {
+  // var img = document.createElement("img");
+  document.body.style.backgroundImage = "url(thumb/" + cat + ")";
+  // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
+  // appendChild(img);
+}
+
+// document.body.onload = loadCatFeed;
+document.body.onload = loadCatView.bind(this, "IMG_4499.jpg");
+</script>
+</body>
+</html>
