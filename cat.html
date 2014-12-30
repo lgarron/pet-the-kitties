@@ -14,7 +14,10 @@
 
 var addImage = function(name) {
   var catPanel = document.createElement("div");
+  var hiddenCatPanel = document.createElement("div");
   catPanel.style.backgroundImage = "url(gif/" + name + ".jpg)";
+  // Preload GIF.
+  hiddenCatPanel.style.backgroundImage = "url(gif/" + name + ".gif)";
   // img.src = "thumb/" + images[image];
   // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
   document.getElementById("cat-feed").appendChild(catPanel);
