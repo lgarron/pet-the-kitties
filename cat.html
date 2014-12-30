@@ -1,24 +1,82 @@
 <html>
 <head>
   <title>Pet the Kitties</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="minimal-ui" />
   <link rel="stylesheet" href="files/cat.css">
+  <link rel="apple-touch-icon" href="apple-touch-icon.jpg" />
   <!-- <script src="fastclick.js"></script> -->
 </head>
 <body>
-<!-- <div id="cat-feed"></div> -->
+<div id="cat-feed"></div>
 <!-- <div id="cat-view"></div> -->
 <script>
+
+var addImage = function(name) {
+  var catPanel = document.createElement("div");
+  catPanel.style.backgroundImage = "url(gif/" + name + ".jpg)";
+  // img.src = "thumb/" + images[image];
+  // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
+  document.getElementById("cat-feed").appendChild(catPanel);
+
+  // TODO: pre-load GIF in background.
+  var animate = function(e) {
+    catPanel.style.backgroundImage = "url(gif/" + name + ".gif)";
+  }
+
+  var halt = function(e) {
+    catPanel.style.backgroundImage = "url(gif/" + name + ".jpg)";
+  }
+
+  var preventDefault = function(e) {
+    e.preventDefault();
+  }
+
+  var lastMotionTime;
+  var animationTimeoutMs = 100;
+
+  var animationTimeout = function() {
+    var currentTime = new Date().getTime();
+    if (lastMotionTime + animationTimeoutMs/2 < currentTime) {
+      halt();
+    }
+  }
+
+  var touchmove = function(e) {
+    animate();
+    lastMotionTime = new Date().getTime();
+    setTimeout(animationTimeout, animationTimeoutMs);
+    e.preventDefault();
+  }
+
+  // catPanel.addEventListener("touchstart", preventDefault);
+  // catPanel.addEventListener("touchend", halt);
+  // catPanel.addEventListener("mousedown", animate);
+  // catPanel.addEventListener("mouseup", halt);
+
+  catPanel.addEventListener("touchmove", touchmove);
+  // catPanel.addEventListener("mousemove", mousemove);
+
+  console.log("Created " + name);
+}
+
 var loadCatFeed = function() {
   console.log("Loading.");
-  var images = ["DSC00801.jpg", "IMG_4474.jpg", "IMG_4481.jpg", "IMG_4488.jpg", "IMG_4499.jpg", "IMG_4509.jpg"
+  // var images = ["DSC00801.jpg", "IMG_4474.jpg", "IMG_4481.jpg", "IMG_4488.jpg", "IMG_4499.jpg", "IMG_4509.jpg"
   //, "IMG_4533.jpg", "IMG_4567.jpg", "IMG_4585.jpg", "IMG_4590.jpg", "IMG_4591.jpg", "IMG_4595.jpg", "IMG_5440.jpg", "IMG_5454.jpg", "IMG_5525.jpg", "IMG_5526.jpg", "IMG_5558.jpg", "IMG_5564.jpg", "IMG_5569.jpg", "IMG_5572.jpg", "IMG_5587.jpg", "IMG_7593.jpg", "IMG_7606.jpg", "IMG_7617.jpg", "IMG_7625.jpg", "IMG_7633.jpg"
+  // ];
+
+  images = [
+    "paw-licking",
+    "lion-cat"
   ];
+
   for (image in images) {
-    var img = document.createElement("img");
-    img.src = "thumb/" + images[image];
-    img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
-    document.getElementById("cat-feed").appendChild(img);
+    // var img = document.createElement("img");
+    // img.src = "thumb/" + images[image];
+    // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
+    // document.getElementById("cat-feed").appendChild(img);
+    addImage(images[image]);
   }
 };
 
@@ -29,8 +87,28 @@ var loadCatView = function(cat) {
   // appendChild(img);
 }
 
+var loadCatGif = function(cat) {
+  // var img = document.createElement("img");
+  document.body.style.backgroundImage = "url(gif/paw-licking.jpg)";
+  // img.alt = ["Awwwww.", "Pet me!", "mrrrow"][Math.floor(Math.random() * 3)];
+  // appendChild(img);
+}
+
+// var touchstart = function() {
+//   document.body.style.backgroundImage = "url(gif/paw-licking.gif)";
+//   console.log("touchstart");
+// }
+
+// var touchend = function() {
+//   document.body.style.backgroundImage = "url(gif/paw-licking.jpg)";
+//   console.log("touchend");
+// }
+
+// document.body.addEventListener("touchstart", touchstart);
+// document.body.addEventListener("touchend", touchend);
+
 // document.body.onload = loadCatFeed;
-document.body.onload = loadCatView.bind(this, "IMG_4499.jpg");
+document.body.onload = loadCatFeed.bind(this, "paw-licking");
 </script>
 </body>
 </html>
