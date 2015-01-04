@@ -63,13 +63,19 @@ var loadCatStream = function() {
     setCatBackground();
   }
 
-
+  var animating = false;
   var animate = function(e) {
-    catStream.style.backgroundImage = "url(gif/" + currentCat + ".gif)";
+    if (!animating) {
+      catStream.style.backgroundImage = "url(gif/" + currentCat + ".gif)";
+      animating = true;
+    }
   }
 
   var halt = function(e) {
-    catStream.style.backgroundImage = "url(gif/" + currentCat + ".jpg)";
+    if (animating) {
+      catStream.style.backgroundImage = "url(gif/" + currentCat + ".jpg)";
+      animating = false;
+    }
   }
 
   var preventDefault = function(e) {
