@@ -114,8 +114,6 @@ CatApp.prototype = {
     }
     this.currentBgImg = fileName;
     document.body.style.backgroundImage = "url(" + fileName + ")";
-
-    console.log(this.currentBgImg);
   },
 
   touchmove: function(e) {
