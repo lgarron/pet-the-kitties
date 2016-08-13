@@ -41,8 +41,7 @@ var CATS = {
 
 var CAT_NAMES = Object.keys(CATS);
 
-var GIF_FOLDER = "./gif";
-var JPG_FOLDER = GIF_FOLDER; // Same folder for now.
+var MP4_FOLDER = "mp4"
 
 var INITIAL_UPCOMING_QUEUE = ["wobble-cat"];
 var UPCOMING_QUEUE_TARGET_LENGTH = 10;
@@ -53,7 +52,7 @@ if (UPCOMING_QUEUE_TARGET_LENGTH > CAT_NAMES.length) {
 var CatApp = function() {
   this._bg = document.getElementById("bg");
   this.img = {};
-  this.currentBgImg = null;
+  this.currentBgFile = null;
 
   document.body.addEventListener("touchmove", this.touchmove.bind(this));
   document.body.addEventListener("mousemove", this.touchmove.bind(this));
@@ -135,35 +134,50 @@ CatApp.prototype = {
   },
 
   showCurrentCatStill: function() {
-    this.setImage(this.currentCat, JPG_FOLDER + "/" + this.currentCat + ".jpg");
+    console.warn("UNIMPLEMENTED: showCurrentCatStill");
+    this.setImage(this.currentCat, this.currentCat);
+    this._video.pause();
   },
 
   showCurrentCatMoving: function() {
-    this.setImage(this.currentCat, GIF_FOLDER + "/" + this.currentCat + ".gif");
+    // console.warn("UNIMPLEMENTED: showCurrentCatMoving");
+    this.setImage(this.currentCat, this.currentCat);
+    this._video.play();
   },
 
-  preloadCat: function(imageName) {
-    var jpgFilename = JPG_FOLDER + "/" + imageName + ".jpg";
-    this.img[jpgFilename] = (new window.Image())
-    this.img[jpgFilename].src = jpgFilename;
+  preloadCat: function(fileName) {
+    var mp4Filename = fileName;
+    this.img[mp4Filename] = (new window.Image())
+    this.img[mp4Filename].src = "https://garron.net/app/cat-mp4/mp4/" + fileName + ".mp4";
 
-    var gifFilename = GIF_FOLDER + "/" + imageName + ".gif";
-    this.img[gifFilename] = (new window.Image())
-    this.img[gifFilename].src = gifFilename;
+    var jpgFilename = fileName;
+    this.img[jpgFilename] = (new window.Image())
+    this.img[jpgFilename].src = "./gif/" + fileName + ".jpg";
   },
 
   setImage: function(imageName, fileName) {
-    if (this.currentBgImg == fileName) {
+    if (this.currentBgFile == fileName) {
       return;
     }
-    this.currentBgImg = fileName;
-    document.body.style.backgroundImage = "url(" + fileName + ")";
+    this.currentBgFile = fileName;
 
-    if (CATS[imageName].orientation === "both") {
-      document.body.style.backgroundPositionX = CATS[imageName].horizontalPercentage;
-    } else {
-      document.body.style.backgroundPositionX = "50%";
-    }
+    this._video = document.createElement("video");
+    this._video.src = "https://garron.net/app/cat-mp4/mp4/" + fileName + ".mp4";
+    this._video.poster = "./gif/" + fileName + ".jpg";
+    this._video.setAttribute("preload", "auto");
+    this._video.setAttribute("loop", "");
+    this._video.setAttribute("muted", "");
+    this._video.setAttribute("autoplay", "");
+    this._video.setAttribute("preload", "auto");
+    this._video.setAttribute("playsinline", "");
+    this._video.setAttribute("webkit-playsinline", "");
+
+    document.querySelector("#bg").innerHTML = "";
+    document.querySelector("#bg").appendChild(this._video);
+
+    this._video.play();
+    this._video.pause();
+
   },
 
   touchmove: function(e) {
