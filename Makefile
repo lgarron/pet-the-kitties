@@ -1,7 +1,7 @@
 
 MANIFEST_FILE = "files/cache.manifest"
-SFTP_PATH     = "towns.dreamhost.com:~/garron.net/app/cat/"
-URL           = "https://garron.net/app/cat/"
+SFTP_PATH     = "towns.dreamhost.com:~/garron.net/app/cat-mp4/"
+URL           = "https://garron.net/app/cat-mp4/"
 
 .PHOHY: deploy
 deploy:
