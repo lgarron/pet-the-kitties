@@ -77,7 +77,7 @@ CatApp.prototype = {
 
   _preload: function(cat) {
     this._preloaded[cat + ".mp4"] = (new window.Image())
-    this._preloaded[cat + ".mp4"].src = "https://garron.net/app/cat-mp4/mp4/" + cat + ".mp4";
+    this._preloaded[cat + ".mp4"].src = "https://garron.net/app/cat-mp4-cache/mp4/" + cat + ".mp4";
 
     this._preloaded[cat + ".jpg"] = (new window.Image())
     this._preloaded[cat + ".jpg"].src = "./poster/" + cat + ".jpg";
