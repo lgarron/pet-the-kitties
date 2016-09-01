@@ -30,13 +30,14 @@ CatApp.prototype = {
   _setFilter: function(orientation) {
     var filter = this._createFilter(orientation);
     this._queue.setFilter(filter);
+    return filter;
   },
 
   _onResize: function() {
     var currentOrientation = this._currentOrientation();
     if (this._savedOrientation !== currentOrientation) {
       this._savedOrientation = currentOrientation;
-      this._setFilter(this._savedOrientation);
+      var filter = this._setFilter(this._savedOrientation);
       if (!filter(this._currentCat)) {
         this._advanceCat();
       }
