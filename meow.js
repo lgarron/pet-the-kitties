@@ -55,6 +55,7 @@ var CatApp = function() {
   this.img = {};
   this.currentBgImg = null;
 
+  document.body.addEventListener("touchstart", this.touchstart.bind(this));
   document.body.addEventListener("touchmove", this.touchmove.bind(this));
   document.body.addEventListener("mousemove", this.touchmove.bind(this));
 
@@ -164,6 +165,9 @@ CatApp.prototype = {
     } else {
       document.body.style.backgroundPositionX = "50%";
     }
+  },
+  touchstart: function(e) {
+    e.preventDefault()
   },
 
   touchmove: function(e) {
