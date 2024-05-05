@@ -1,0 +1,7 @@
+{
+  "@cubing/deploy": {
+    "https://garron.net/app/cat/": {
+      "fromLocalDir": "."
+    }
+  }
+}
